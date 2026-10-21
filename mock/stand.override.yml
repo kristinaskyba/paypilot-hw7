@@ -1,0 +1,10 @@
+services:
+  stand:
+    environment:
+      - LLM_PROVIDER=${L07_PROVIDER:-openrouter}
+      - HTTPS_PROXY=http://host.docker.internal:1080
+      - SSL_CERT_FILE=/certs/mockserver-ca.pem
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ${L07_DIR:-../l07}/mock/mockserver-ca.pem:/certs/mockserver-ca.pem:ro
