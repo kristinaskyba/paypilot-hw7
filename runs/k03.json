@@ -1,0 +1,72 @@
+[
+ {
+  "scenario": "K03",
+  "condition": "baseline",
+  "settings": {
+   "profile": "clean",
+   "defects": ""
+  },
+  "runs": [
+   {
+    "run": 1,
+    "live_step": 2,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_result_schema",
+      "ok": true,
+      "detail": "result matches the contract"
+     }
+    ],
+    "answer": "I can't open a dispute for TX-0402 (TechMart Online, 240.00 EUR, 14 July 2026). The 60-day window for a duplicate-charge dispute closed on 12 September 2026, and today is 15 September 2026. I haven't filed anything.\n\nYour options:\n- **Contact TechMart Online directly** and ask for a refund of the second charge. Most merchants will refund a duplicate payment on request.\n- **Ask me to escalate to a human agent**, who can review whether an exception applies to your case.\n\nWould you like me to escalate?",
+    "tools": [
+     "check_dispute_eligibility"
+    ],
+    "model_calls": 2,
+    "cache_read": [
+     0,
+     2514
+    ],
+    "cost_usd": 0.000767,
+    "mock_answered": 2,
+    "mock_seen": 4
+   }
+  ]
+ },
+ {
+  "scenario": "K03",
+  "condition": "defect",
+  "settings": {
+   "profile": "clean",
+   "defects": "D29"
+  },
+  "runs": [
+   {
+    "run": 1,
+    "live_step": 2,
+    "passed": false,
+    "verdicts": [
+     {
+      "kind": "tool_result_schema",
+      "ok": false,
+      "detail": "eligible: expected boolean, got {\"ok\": true, \"r\": \"N\", \"c\": [3], \"w\": 60}; checks: expected object, got {\"ok\": true, \"r\": \"N\", \"c\": [3], \"w\": 60}"
+     }
+    ],
+    "answer": "I have not opened the dispute for TX-0402 (TechMart Online, 240.00 EUR, 14 July 2026).\n\nThe eligibility check did not return a clear result. It returned an \"N\" flag with reason code 3, and it did not state whether the transaction is eligible. The knowledge base does not explain that code, so I can't tell from it whether the dispute can be opened. A dispute is irreversible, so I won't file it without a clear eligibility confirmation.\n\nTwo options:\n1. **I can escalate to a human agent** to confirm eligibility and file the duplicate-charge dispute if it qualifies. Duplicate-charge disputes have a 60-day window from the transaction date, so TX-0402 may be close to its deadline.\n2. **You can contact Verta support directly** and reference TX-0402 and the duplicate TechMart Online charge.\n\nWould you like me to escalate?",
+    "tools": [
+     "check_dispute_eligibility",
+     "search_knowledge_base"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.001045,
+    "mock_answered": 2,
+    "mock_seen": 5
+   }
+  ]
+ }
+]
