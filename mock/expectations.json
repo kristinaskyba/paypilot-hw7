@@ -1,5 +1,91 @@
 [
   {
+    "id": "k01-step1-reply1",
+    "httpRequest": {
+      "method": "POST",
+      "path": ".*/chat/completions",
+      "body": {
+        "type": "JSON_PATH",
+        "jsonPath": "$.messages[-1:][?(@.role == 'user' && @.content == 'There is a 120 USD charge from BookDepot US on 9 September on my account. I did not buy anything there.')]"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "content-type": [
+          "application/json"
+        ]
+      },
+      "body": {
+        "id": "k01-step1-reply1",
+        "object": "chat.completion",
+        "model": "anthropic/claude-haiku-5.5",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "tool_calls",
+            "message": {
+              "role": "assistant",
+              "content": null,
+              "tool_calls": [
+                {
+                  "id": "call_k01_tx",
+                  "type": "function",
+                  "function": {
+                    "name": "get_transactions",
+                    "arguments": "{\"account_id\": \"ACC-1009\"}"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "k01-step1-reply2",
+    "httpRequest": {
+      "method": "POST",
+      "path": ".*/chat/completions",
+      "body": {
+        "type": "JSON_PATH",
+        "jsonPath": "$.messages[-1:][?(@.role == 'tool' && @.tool_call_id == 'call_k01_tx')]"
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "content-type": [
+          "application/json"
+        ]
+      },
+      "body": {
+        "id": "k01-step1-reply2",
+        "object": "chat.completion",
+        "model": "anthropic/claude-haiku-5.5",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "stop",
+            "message": {
+              "role": "assistant",
+              "content": "I can see it on ACC-1009: TX-0801, 9 September 2026, 120.00 USD, BookDepot US."
+            }
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        }
+      }
+    }
+  },
+  {
     "id": "s1-step1-reply1",
     "httpRequest": {
       "method": "POST",

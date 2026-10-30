@@ -1,0 +1,85 @@
+[
+ {
+  "scenario": "K01",
+  "condition": "baseline",
+  "settings": {
+   "profile": "clean",
+   "defects": ""
+  },
+  "runs": [
+   {
+    "run": 1,
+    "live_step": 2,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0801', 'reason_code': 'unauthorized_debit'}]"
+     },
+     {
+      "kind": "state_row",
+      "ok": true,
+      "detail": "rows [{'transaction_id': 'TX-0801', 'account_id': 'ACC-1009', 'amount': 120.0, 'currency': 'USD'}]"
+     }
+    ],
+    "answer": "I've opened an unauthorized-debit dispute for the 120.00 USD charge from BookDepot US on 9 September 2026 (transaction TX-0801, account ACC-1009). The dispute ID is 1 and its status is open.\n\nThe dispute window for this reason runs until 4 November 2026. I can't tell you the timeline for resolution from my tools, so please watch for updates on dispute 1. If you didn't authorize any other transactions, or you think your card details are compromised, tell me and I can escalate this to a human agent.",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.00052,
+    "mock_answered": 2,
+    "mock_seen": 5
+   }
+  ]
+ },
+ {
+  "scenario": "K01",
+  "condition": "defect",
+  "settings": {
+   "profile": "clean",
+   "defects": "D11"
+  },
+  "runs": [
+   {
+    "run": 1,
+    "live_step": 2,
+    "passed": false,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0801', 'reason_code': 'unauthorized_debit'}]"
+     },
+     {
+      "kind": "state_row",
+      "ok": false,
+      "detail": "currency='EUR', expected 'USD'"
+     }
+    ],
+    "answer": "I've opened an unauthorized-debit dispute (dispute ID 1) for the 120.00 USD charge from BookDepot US on 9 September 2026 (TX-0801) on account ACC-1009.\n\nThe eligibility check passed: the transaction is settled and within the 56-day window, which runs to 4 November 2026. The dispute is now open. I don't have details on the next steps or expected timelines for the review, so please check with Verta support or the dispute record for those.",
+    "tools": [
+     "check_dispute_eligibility",
+     "get_account",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000623,
+    "mock_answered": 2,
+    "mock_seen": 5
+   }
+  ]
+ }
+]
