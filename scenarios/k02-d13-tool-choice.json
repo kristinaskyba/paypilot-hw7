@@ -1,0 +1,19 @@
+{
+  "id": "K02",
+  "title": "D13: transfer advice must use check_limits, not transaction history",
+  "dimension": "tool",
+  "level": [3, 4],
+  "customer_id": "CUS-0010",
+  "gate": "release",
+  "runs": 5,
+  "conditions": {
+    "baseline": {"profile": "clean", "defects": ""},
+    "defect": {"profile": "clean", "defects": "D13"}
+  },
+  "turns": [
+    {"user": "Will a 4,500 EUR transfer go through today?", "live": true}
+  ],
+  "assertions": [
+    {"kind": "tool_sequence", "must_include": ["check_limits"], "must_exclude": ["get_transactions"]}
+  ]
+}
