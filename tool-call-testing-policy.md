@@ -25,7 +25,16 @@ _To be filled._
 _To be filled._
 
 ## 7. Risk classes
-_To be filled._
+
+| Class | PayPilot tools | What a wrong call breaks | Check mode | Cost of the mode |
+|---|---|---|---|---|
+| Read | get_account, get_transactions, check_limits, search_knowledge_base | nothing in state; wrong input for the next step (D13) | after the fact, from the trace | no delay |
+| Compute | quote_fx, check_dispute_eligibility | wrong conclusion; state stays intact | after the fact, against the engine | no delay |
+| Write, reversible | escalate_to_human | an extra or missed escalation; a person clears the queue | after the fact, runs: 5, release | people's time in the queue |
+| Write, irreversible | create_dispute, send_statement | a row in the database or an email outside the system; cannot be taken back | blocking check before the call, plus a state check after it | delay on every call; a blocked legitimate case |
+| Repeat (irreversible writes) | the same intent twice: retry, "please open it again" | a second row, a second email | repeat on the live step, count == 1 (S4) | one extra run |
+
+**Irreversibility boundary:** between escalate_to_human and create_dispute / send_statement. To the left, the next step or a person can fix a mistake. To the right, the effect is already in the database or has left the system.
 
 ## 8. Blocking checks and gate
 _To be filled._
