@@ -1,6 +1,8 @@
 {
   "id": "S3",
   "title": "D29: результат перевірки спору незрозумілий агенту",
+  "dimension": "result contract; write that should not happen",
+  "level": [3, 4, 2],
   "customer_id": "CUS-0004",
   "gate": "release",
   "runs": 5,

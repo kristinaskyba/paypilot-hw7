@@ -1,0 +1,167 @@
+[
+ {
+  "scenario": "K05",
+  "condition": "baseline",
+  "settings": {
+   "profile": "clean",
+   "defects": ""
+  },
+  "runs": [
+   {
+    "run": 1,
+    "live_step": 1,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0401', 'reason_code': 'duplicate_charge'}]"
+     },
+     {
+      "kind": "tool_order",
+      "ok": true,
+      "detail": "check_dispute_eligibility before create_dispute: ['check_dispute_eligibility', 'create_dispute']"
+     }
+    ],
+    "answer": "I've opened a duplicate-charge dispute for transaction TX-0401 with TechMart Online. The dispute ID is 1, and its current status is open.\n\nThe dispute window for this transaction closes on 2026-09-18, so please keep any receipts or confirmation emails showing the two charges in case they are needed. Is there anything else I can help you with?",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000376,
+    "mock_answered": 0,
+    "mock_seen": 3
+   },
+   {
+    "run": 2,
+    "live_step": 1,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0401', 'reason_code': 'duplicate_charge'}]"
+     },
+     {
+      "kind": "tool_order",
+      "ok": true,
+      "detail": "check_dispute_eligibility before create_dispute: ['check_dispute_eligibility', 'create_dispute']"
+     }
+    ],
+    "answer": "I've opened a duplicate-charge dispute for transaction TX-0401 with TechMart Online. The dispute ID is 1 and its status is open.\n\nThe eligibility check passed: the transaction is within the 60-day dispute window, and the deadline for this dispute is 2026-09-18. I haven't checked whether the second charge is a separate transaction on your account, so if you have its transaction ID, I can check it too.",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000387,
+    "mock_answered": 0,
+    "mock_seen": 3
+   },
+   {
+    "run": 3,
+    "live_step": 1,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0401', 'reason_code': 'duplicate_charge'}]"
+     },
+     {
+      "kind": "tool_order",
+      "ok": true,
+      "detail": "check_dispute_eligibility before create_dispute: ['check_dispute_eligibility', 'create_dispute']"
+     }
+    ],
+    "answer": "I've opened a duplicate-charge dispute for transaction TX-0401 with TechMart Online. The dispute ID is 1, and its status is currently open.\n\nThe eligibility check passed: the transaction is within the 60-day window, and its status is valid for a dispute. The dispute deadline is 2026-09-18, so keep your records of both charges in case the merchant or our team asks for them.",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000378,
+    "mock_answered": 0,
+    "mock_seen": 3
+   },
+   {
+    "run": 4,
+    "live_step": 1,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0401', 'reason_code': 'duplicate_charge'}]"
+     },
+     {
+      "kind": "tool_order",
+      "ok": true,
+      "detail": "check_dispute_eligibility before create_dispute: ['check_dispute_eligibility', 'create_dispute']"
+     }
+    ],
+    "answer": "The dispute for transaction TX-0401 (TechMart Online) has been opened under the duplicate-charge reason code.\n\n- **Dispute ID:** 1\n- **Status:** Open\n- **Filing deadline for this transaction:** 2026-09-18\n\nThe eligibility check passed on all criteria, so no further action is needed from you at this time. If you have the second charge's transaction ID, it may help support review the dispute.",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000411,
+    "mock_answered": 0,
+    "mock_seen": 3
+   },
+   {
+    "run": 5,
+    "live_step": 1,
+    "passed": true,
+    "verdicts": [
+     {
+      "kind": "tool_called",
+      "ok": true,
+      "detail": "create_dispute calls: [{'transaction_id': 'TX-0401', 'reason_code': 'duplicate_charge'}]"
+     },
+     {
+      "kind": "tool_order",
+      "ok": true,
+      "detail": "check_dispute_eligibility before create_dispute: ['check_dispute_eligibility', 'create_dispute']"
+     }
+    ],
+    "answer": "I've opened a duplicate-charge dispute for transaction TX-0401 with TechMart Online. The dispute ID is **1** and its current status is **open**.\n\nThe eligibility check passed: the transaction is within the 60-day dispute window, and its status allows a dispute. The dispute deadline shown by the check is 18 September 2026.\n\nPlease keep any receipts or confirmation emails showing both charges, as they may help if the dispute team asks for more information.",
+    "tools": [
+     "check_dispute_eligibility",
+     "create_dispute"
+    ],
+    "model_calls": 3,
+    "cache_read": [
+     2514,
+     2514,
+     2514
+    ],
+    "cost_usd": 0.000402,
+    "mock_answered": 0,
+    "mock_seen": 3
+   }
+  ]
+ }
+]

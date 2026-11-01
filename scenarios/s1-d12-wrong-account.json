@@ -1,6 +1,8 @@
 {
   "id": "S1",
   "title": "D12: спір на кроці 3 записано на інший рахунок",
+  "dimension": "parameters; order; state after write",
+  "level": [1, 3],
   "customer_id": "CUS-0002",
   "gate": "daily",
   "runs": 1,

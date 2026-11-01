@@ -1,6 +1,8 @@
 {
   "id": "S5",
   "title": "D28: кеш промпту не тримається на кроці 4",
+  "dimension": "cost (cache)",
+  "level": [2],
   "customer_id": "CUS-0010",
   "gate": "release",
   "runs": 5,
