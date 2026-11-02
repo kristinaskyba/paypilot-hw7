@@ -4,7 +4,7 @@
 The PayPilot support agent (anthropic/claude-haiku-5.5 via OpenRouter) and its 9 tools. Tested: which tool is called, with which arguments and in which order; the tool result; the database state after a write; the prompt cache, all on one live step of a multi-turn chat. Not tested: the wording of answers (L02–L06 sets), production state, and whether a call was needed at all (judge, L09).
 
 ## 2. Prediction and result
-Prediction made on 2026-10-30, before the S1, S3 and S5 runs (commit ac4a228). Results from runs on 2026-10-30, 5 runs per condition.
+Prediction made on 2026-10-30, before the S1, S3 and S5 runs (commit ac4a228). Results from runs on 2026-10-30, 5 runs per condition. S3 was later removed from the set: its two checks live in K03 (contract, daily) and K04 (behaviour, release).
 
 | # | Question | Prediction | Result |
 |---|---|---|---|
@@ -49,15 +49,16 @@ K04: TX-0402 is outside the 60-day window (14 Jul + 60 days = 12 Sep; stand cloc
 **Irreversibility boundary:** between escalate_to_human and create_dispute / send_statement. To the left, the next step or a person can fix a mistake. To the right, the effect is already in the database or has left the system.
 
 ## 8. Blocking checks and gate
+Latency measured in Phoenix on the L07 runs (30 Oct – 1 Nov 2026): 159 real model calls (anthropic/claude-haiku-5.5 via OpenRouter) took median 1.5 s, p90 3.0 s, max 6.8 s; the tool create_dispute took median 4 ms (max 13 ms), check_dispute_eligibility median 1 ms (max 2 ms).
 
-| Tool | Check before the call | Cost | Legitimate case it breaks |
+| Tool | Check before the call | Cost in latency (measured) | Legitimate case it breaks |
 |---|---|---|---|
-| create_dispute | in code: dispute account and currency come only from the transaction (stops D11, D12) | milliseconds | not identified yet; cost not fully counted (open item, section 12) |
-| create_dispute | engine: check_dispute_eligibility before the write | one extra tool call | a late but justified dispute is blocked when the engine is wrong |
-| send_statement | in code: email must match the account owner email | milliseconds | "send it to my work email" (L06) |
-| both | human confirmation only above a threshold (amount, vulnerable customer) | queue time, the customer waits | slower service; the most expensive form under Ship it |
+| create_dispute | in code: dispute account and currency come only from the transaction (stops D11, D12) | ~1 ms (a transaction lookup inside the 4 ms write) | an exchange-rate complaint: CUS-0008 paid 120 USD (TX-0801) from the EUR account ACC-1009 and says the bank applied a wrong rate, so the loss is in EUR; the check forces the dispute into USD and blocks this real EUR claim |
+| create_dispute | engine: check_dispute_eligibility before the write, as a separate tool step | ~1 ms for the engine, plus one extra model round trip: median 1.5 s, p90 3.0 s | a late but justified dispute (e.g. agreed with an operator) is blocked when the engine says no |
+| send_statement | in code: email must match the account owner email | ~1 ms (one lookup) | "send it to my work email" (L06) |
+| both | human confirmation only above a threshold (amount, vulnerable customer) | minutes to hours in a queue (not measured on the stand) | slower service; the most expensive form under Ship it |
 
-Gate rule: daily / 1 when the verdict is fixed once the action happens (S1, K01, S4, K03); release / 5 when it depends on the model choice (S2, S3, S5, K02, K04, K05). No runs: 5 in daily. Exception: the kit keeps tool_order inside daily S1 for illustration; in this set the order check lives in release K05.
+Gate rule: daily / 1 when the verdict is fixed once the action happens (S1, K01, S4, K03); release / 5 when it depends on the model choice (S2, S5, K02, K04, K05). No runs: 5 in daily, and no model-choice check in daily: the order check lives only in release K05.
 
 ## 9. Tool specification
 Tool descriptions are part of the specification. D13 changes two tool descriptions (check_limits "deprecated", get_transactions "authoritative") and the "4. Tool rules" section of the prompt; the agent then never called check_limits (K02, 0 of 5 green).
@@ -81,7 +82,7 @@ ToolCorrectnessMetric (DeepEval) compares tool names, plus arguments and order w
 | Whether the call was needed at all | an agent that escalates everything passes all checks | needs a human oracle | defer to the judge (L09) |
 | Customer names the wrong transaction | suite stays green, wrong dispute | the oracle does not know intent | accept; oracle: human cases (L03) |
 | State in production | D11/D12-type bugs invisible | no test state endpoint in production | defer to audit log and trace (L08) |
-| Legitimate case broken by the payload check in create_dispute | a real dispute may be blocked | not identified yet | defer; find with the disputes team |
+| Exchange-rate complaints on foreign-currency payments (case broken by the account/currency check in create_dispute) | a real EUR claim about a USD payment is blocked | the strict check stops D11/D12, which cost more | accept; route such cases to an operator |
 | Rates from 5 runs (3 of 5) | wide uncertainty | cost and time | accept; more runs before a release decision |
 
 ---
